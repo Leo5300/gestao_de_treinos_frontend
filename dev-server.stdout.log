@@ -1,0 +1,76 @@
+
+> bootcamp-treinos-frontend@0.1.0 dev C:\Users\leona\Videos\bootcamp-treinos-frontend
+> next dev
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.47:3000
+- Environments: .env
+
+✓ Starting...
+Creating turbopack project {
+  dir: 'C:\\Users\\leona\\Videos\\bootcamp-treinos-frontend',
+  testMode: true
+}
+✓ Ready in 1486ms
+○ Compiling /auth ...
+ GET / 307 in 9.5s (compile: 8.3s, render: 1152ms)
+ GET /auth 200 in 9.5s (compile: 9.0s, render: 505ms)
+ GET /auth 200 in 83ms (compile: 9ms, render: 74ms)
+ GET /auth 200 in 111ms (compile: 6ms, render: 105ms)
+ GET / 307 in 101ms (compile: 5ms, render: 96ms)
+ GET /auth 200 in 150ms (compile: 6ms, render: 144ms)
+ GET /auth 200 in 919ms (compile: 281ms, render: 638ms)
+ GET /auth 200 in 448ms (compile: 131ms, render: 317ms)
+ GET /auth 200 in 104ms (compile: 10ms, render: 94ms)
+  Reload env: .env
+✓ Compiled in 1339ms
+ GET /auth 200 in 882ms (compile: 11ms, render: 871ms)
+ GET /auth 200 in 2.5s (compile: 1268ms, render: 1231ms)
+ GET /auth 200 in 828ms (compile: 5ms, render: 823ms)
+ GET /auth 200 in 710ms (compile: 7ms, render: 704ms)
+  Reload env: .env
+✓ Compiled in 161ms
+ GET /auth 200 in 1155ms (compile: 328ms, render: 827ms)
+ GET /auth 200 in 644ms (compile: 9ms, render: 634ms)
+ GET /auth 200 in 624ms (compile: 466ms, render: 158ms)
+ GET /auth 200 in 631ms (compile: 8ms, render: 623ms)
+  Reload env: .env
+✓ Compiled in 57ms
+ GET /auth 200 in 387ms (compile: 181ms, render: 207ms)
+ GET /auth 200 in 142ms (compile: 7ms, render: 135ms)
+ GET /auth 200 in 86ms (compile: 11ms, render: 75ms)
+  Reload env: .env
+ GET /auth 200 in 236ms (compile: 129ms, render: 107ms)
+  Reload env: .env
+ GET /auth 200 in 205ms (compile: 120ms, render: 86ms)
+  Reload env: .env
+ GET /auth 200 in 203ms (compile: 102ms, render: 102ms)
+  Reload env: .env
+ GET /auth 200 in 583ms (compile: 138ms, render: 446ms)
+ GET /auth 200 in 223ms (compile: 112ms, render: 110ms)
+  Reload env: .env
+ GET /auth 200 in 258ms (compile: 146ms, render: 112ms)
+  Reload env: .env
+ GET /auth 200 in 357ms (compile: 151ms, render: 206ms)
+  Reload env: .env
+ GET /auth 200 in 188ms (compile: 109ms, render: 78ms)
+  Reload env: .env
+ GET /auth 200 in 223ms (compile: 122ms, render: 101ms)
+  Reload env: .env
+ GET /auth 200 in 645ms (compile: 366ms, render: 279ms)
+  Reload env: .env
+ GET /auth 200 in 277ms (compile: 150ms, render: 127ms)
+  Reload env: .env
+ GET /auth 200 in 366ms (compile: 173ms, render: 193ms)
+  Reload env: .env
+ GET /auth 200 in 260ms (compile: 148ms, render: 112ms)
+  Reload env: .env
+ GET /auth 200 in 842ms (compile: 317ms, render: 525ms)
+  Reload env: .env
+ GET /auth 200 in 347ms (compile: 178ms, render: 169ms)
+  Reload env: .env
+ GET /auth 200 in 271ms (compile: 139ms, render: 131ms)
+ GET /auth 200 in 496ms (compile: 312ms, render: 184ms)
+[?25h
+ ELIFECYCLE  Command failed with exit code 1.
