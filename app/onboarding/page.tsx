@@ -1,13 +1,23 @@
 import { redirect } from "next/navigation";
-import { authClient } from "@/app/_lib/auth-client";
+import { headers } from "next/headers";
 import { getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import { Chat } from "@/app/_components/chat";
 
 export default async function OnboardingPage() {
-  const session = await authClient.getSession();
+  const headerStore = await headers();
 
-  if (!session.data?.user) redirect("/auth");
+  const session = await fetch(
+    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`,
+    {
+      headers: {
+        cookie: headerStore.get("cookie") ?? "",
+      },
+      cache: "no-store",
+    }
+  ).then((res) => res.json());
+
+  if (!session?.user) redirect("/auth");
 
   const [homeData, trainData] = await Promise.all([
     getHomeData(dayjs().format("YYYY-MM-DD")),
@@ -23,5 +33,7 @@ export default async function OnboardingPage() {
     redirect("/");
   }
 
-  return <Chat embedded initialMessage="Quero começar a melhorar minha saúde!" />;
+  return (
+    <Chat embedded initialMessage="Quero começar a melhorar minha saúde!" />
+  );
 }
