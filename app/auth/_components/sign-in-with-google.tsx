@@ -8,7 +8,7 @@ export const SignInWithGoogle = () => {
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/",
+      callbackURL: "/onboarding",
     });
 
     if (error) {
@@ -26,7 +26,6 @@ export const SignInWithGoogle = () => {
         alt=""
         width={16}
         height={16}
-        className="shrink-0"
       />
       Fazer login com Google
     </Button>
