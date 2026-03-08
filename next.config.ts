@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -9,6 +8,15 @@ const nextConfig: NextConfig = {
         hostname: "*.ufs.sh",
       },
     ],
+  },
+
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "https://gestao-de-treinos.onrender.com/:path*",
+      },
+    ];
   },
 };
 
