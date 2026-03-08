@@ -7,24 +7,35 @@ import { Chat } from "@/app/_components/chat";
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const checkSession = async () => {
-      const session = await authClient.getSession();
+      try {
+        const session = await authClient.getSession();
 
-      if (!session?.data?.user) {
+        if (!session?.data?.user) {
+          router.replace("/auth");
+          return;
+        }
+
+        setReady(true);
+      } catch (error) {
+        console.error("Erro ao verificar sessão:", error);
         router.replace("/auth");
-        return;
       }
-
-      setLoading(false);
     };
 
     checkSession();
   }, [router]);
 
-  if (loading) return <div>Carregando...</div>;
+  if (!ready) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        Carregando...
+      </div>
+    );
+  }
 
   return (
     <Chat embedded initialMessage="Quero começar a melhorar minha saúde!" />
