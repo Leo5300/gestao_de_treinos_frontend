@@ -9,15 +9,6 @@ const nextConfig: NextConfig = {
       },
     ],
   },
-
-  async rewrites() {
-    return [
-      {
-        source: "/api/:path*",
-        destination: "https://gestao-de-treinos.onrender.com/:path*",
-      },
-    ];
-  },
 };
 
 export default nextConfig;
