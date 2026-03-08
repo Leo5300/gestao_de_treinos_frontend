@@ -8,7 +8,7 @@ export const SignInWithGoogle = () => {
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "/onboarding",
+      callbackURL: "https://gestao-de-treinos-frontend.onrender.com/onboarding",
     });
 
     if (error) {
