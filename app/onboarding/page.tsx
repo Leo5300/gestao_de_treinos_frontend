@@ -1,37 +1,52 @@
-import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
-import dayjs from "dayjs";
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { authClient } from "@/app/_lib/auth-client";
 import { Chat } from "@/app/_components/chat";
 
-export default async function OnboardingPage() {
-  const headerStore = await headers();
+type SessionUser = {
+  id?: string;
+  email?: string;
+  name?: string;
+};
 
-  const session = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL}/api/auth/session`,
-    {
-      headers: {
-        cookie: headerStore.get("cookie") ?? "",
-      },
-      cache: "no-store",
-    }
-  ).then((res) => res.json());
+export default function OnboardingPage() {
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState<SessionUser | null>(null);
 
-  if (!session?.user) redirect("/auth");
+  useEffect(() => {
+    const loadSession = async () => {
+      try {
+        const session = await authClient.getSession();
 
-  const [homeData, trainData] = await Promise.all([
-    getHomeData(dayjs().format("YYYY-MM-DD")),
-    getUserTrainData(),
-  ]);
+        if (!session?.data?.user) {
+          router.replace("/auth");
+          return;
+        }
 
-  if (
-    homeData.status === 200 &&
-    trainData.status === 200 &&
-    homeData.data.activeWorkoutPlanId &&
-    trainData.data
-  ) {
-    redirect("/");
+        setUser(session.data.user);
+      } catch (error) {
+        console.error("Erro ao buscar sessão:", error);
+        router.replace("/auth");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadSession();
+  }, [router]);
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-black text-white">
+        Carregando...
+      </div>
+    );
   }
+
+  if (!user) return null;
 
   return (
     <Chat embedded initialMessage="Quero começar a melhorar minha saúde!" />
