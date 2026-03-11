@@ -26,8 +26,8 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const [queryState, setQueryState] = useQueryStates({
-    open: parseAsBoolean.withDefault(false),
-    message: parseAsString,
+    chat_open: parseAsBoolean.withDefault(false),
+    chat_initial_message: parseAsString,
   });
 
   const { messages, sendMessage, status } = useChat({
@@ -66,11 +66,11 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
     form.reset();
   }
 
-  if (!embedded && !queryState.open) {
+  if (!embedded && !queryState.chat_open) {
     return (
       <button
         className="fixed bottom-6 right-6 flex items-center gap-2 rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg hover:bg-blue-700"
-        onClick={() => setQueryState({ open: true })}
+        onClick={() => setQueryState({ chat_open: true })}
       >
         <Sparkles size={18} />
         Coach AI
@@ -79,7 +79,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
   }
 
   return (
-    <div className="flex h-full w-full flex-col rounded-xl border bg-white shadow-lg">
+    <div className="fixed bottom-6 right-6 z-50 flex h-[500px] w-[350px] flex-col rounded-xl border bg-white shadow-lg">
       <div className="flex items-center justify-between border-b px-4 py-3">
         <div className="flex items-center gap-2">
           <Sparkles className="text-blue-600" size={18} />
@@ -89,7 +89,7 @@ export function Chat({ embedded = false, initialMessage }: ChatProps) {
         {!embedded && (
           <button
             className="text-gray-500 hover:text-gray-700"
-            onClick={() => setQueryState({ open: false })}
+            onClick={() => setQueryState({ chat_open: false })}
           >
             <X size={18} />
           </button>
