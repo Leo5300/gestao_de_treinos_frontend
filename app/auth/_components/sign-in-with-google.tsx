@@ -2,13 +2,12 @@
 
 import { authClient } from "@/app/_lib/auth-client";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
-export const SignInWithGoogle = () => {
+export function SignInWithGoogle() {
   const handleGoogleLogin = async () => {
     const { error } = await authClient.signIn.social({
       provider: "google",
-      callbackURL: "https://gestao-de-treinos-frontend.onrender.com/onboarding",
+      callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/`,
     });
 
     if (error) {
@@ -16,18 +15,5 @@ export const SignInWithGoogle = () => {
     }
   };
 
-  return (
-    <Button
-      onClick={handleGoogleLogin}
-      className="h-[38px] rounded-full bg-white px-6 text-black hover:bg-white/90"
-    >
-      <Image
-        src="/google-icon.svg"
-        alt=""
-        width={16}
-        height={16}
-      />
-      Fazer login com Google
-    </Button>
-  );
-};
+  return <Button onClick={handleGoogleLogin}>Entrar com Google</Button>;
+}

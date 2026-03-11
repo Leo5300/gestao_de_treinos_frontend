@@ -22,17 +22,17 @@ interface ChatProps {
   initialMessage?: string;
 }
 
-export function Chat({ embedded, initialMessage }: ChatProps) {
+export function Chat({ embedded = false, initialMessage }: ChatProps) {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
-  const [{ open }, setQueryState] = useQueryStates({
+  const [queryState, setQueryState] = useQueryStates({
     open: parseAsBoolean.withDefault(false),
     message: parseAsString,
   });
 
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
-      api: "/api/ai",
+      api: `${process.env.NEXT_PUBLIC_API_URL}/ai`,
       credentials: "include",
     }),
   });
@@ -44,23 +44,19 @@ export function Chat({ embedded, initialMessage }: ChatProps) {
     },
   });
 
-  const scrollToBottom = () => {
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({
       behavior: "smooth",
     });
-  };
-
-  useEffect(() => {
-    scrollToBottom();
   }, [messages]);
 
   useEffect(() => {
-    if (initialMessage && messages.length === 0) {
+    if (embedded && initialMessage && messages.length === 0) {
       sendMessage({
         text: initialMessage,
       });
     }
-  }, [initialMessage, messages, sendMessage]);
+  }, [embedded, initialMessage, messages.length, sendMessage]);
 
   function onSubmit(values: FormSchema) {
     sendMessage({
@@ -70,7 +66,7 @@ export function Chat({ embedded, initialMessage }: ChatProps) {
     form.reset();
   }
 
-  if (!embedded && !open) {
+  if (!embedded && !queryState.open) {
     return (
       <button
         className="fixed bottom-6 right-6 flex items-center gap-2 rounded-full bg-blue-600 px-4 py-3 text-white shadow-lg hover:bg-blue-700"
@@ -115,7 +111,7 @@ export function Chat({ embedded, initialMessage }: ChatProps) {
                 message.parts.map((part, index) =>
                   part.type === "text" ? (
                     <Streamdown key={index}>{part.text}</Streamdown>
-                  ) : null,
+                  ) : null
                 )
               ) : (
                 <p>
