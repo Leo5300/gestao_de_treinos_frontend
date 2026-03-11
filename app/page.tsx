@@ -13,7 +13,10 @@ import { WorkoutDayCard } from "./_components/workout-day-card";
 export default async function Home() {
   const session = await getServerSession();
 
-  if (!session.data?.user) redirect("/auth");
+  // 🔐 proteção de rota
+  if (!session?.data?.user) {
+    redirect("/auth");
+  }
 
   const today = dayjs();
 
@@ -23,13 +26,6 @@ export default async function Home() {
   ]);
 
   const { homeData: appHomeData } = guardAppAccess(homeData, trainData);
-
-  /**
-   * REGRAS
-   *
-   * Se não existir plano ativo → onboarding
-   * Se não existir treino do usuário → onboarding
-   */
 
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = appHomeData;
 

@@ -11,7 +11,10 @@ import { LogoutButton } from "./_components/logout-button";
 export default async function ProfilePage() {
   const session = await getServerSession();
 
-  if (!session.data?.user) redirect("/auth");
+  // 🔐 proteção de rota
+  if (!session?.data?.user) {
+    redirect("/auth");
+  }
 
   const [trainData, homeData] = await Promise.all([
     getUserTrainData(),

@@ -18,11 +18,21 @@ function formatTotalTime(totalSeconds: number): string {
 export default async function StatsPage() {
   const session = await getServerSession();
 
-  if (!session.data?.user) redirect("/auth");
+  // 🔐 proteção da rota
+  if (!session?.data?.user) {
+    redirect("/auth");
+  }
 
   const today = dayjs();
-  const from = today.subtract(2, "month").startOf("month").format("YYYY-MM-DD");
-  const to = today.endOf("month").format("YYYY-MM-DD");
+
+  const from = today
+    .subtract(2, "month")
+    .startOf("month")
+    .format("YYYY-MM-DD");
+
+  const to = today
+    .endOf("month")
+    .format("YYYY-MM-DD");
 
   const [statsResponse, homeData, trainData] = await Promise.all([
     getStats({ from, to }),
@@ -64,7 +74,10 @@ export default async function StatsPage() {
           Consistência
         </h2>
 
-        <StatsHeatmap consistencyByDay={consistencyByDay} today={today} />
+        <StatsHeatmap
+          consistencyByDay={consistencyByDay}
+          today={today}
+        />
 
         <div className="grid grid-cols-2 gap-3">
           <StatCard
@@ -72,6 +85,7 @@ export default async function StatsPage() {
             value={String(completedWorkoutsCount)}
             label="Treinos Feitos"
           />
+
           <StatCard
             icon={CirclePercent}
             value={`${Math.round(conclusionRate * 100)}%`}
