@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
+import { guardAppAccess } from "./_lib/app-access";
 import { getHomeData, getUserTrainData } from "./_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -26,9 +27,7 @@ export default async function Home() {
     getUserTrainData(),
   ]);
 
-  if (homeData.status !== 200) {
-    throw new Error("Failed to fetch home data");
-  }
+  const { homeData: appHomeData } = guardAppAccess(homeData, trainData);
 
   /**
    * REGRAS
@@ -37,14 +36,7 @@ export default async function Home() {
    * Se não existir treino do usuário → onboarding
    */
 
-  const hasActivePlan = !!homeData.data.activeWorkoutPlanId;
-  const hasTrainData = trainData.status === 200 && !!trainData.data;
-
-  if (!hasActivePlan || !hasTrainData) {
-    redirect("/onboarding");
-  }
-
-  const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
+  const { todayWorkoutDay, workoutStreak, consistencyByDay } = appHomeData;
 
   const userName = session.data.user.name?.split(" ")[0] ?? "";
 

@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { authClient } from "@/app/_lib/auth-client";
 import { headers } from "next/headers";
+import { guardAppAccess } from "@/app/_lib/app-access";
 import { getWorkoutDay, getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
 import Image from "next/image";
@@ -52,10 +53,7 @@ export default async function WorkoutDayPage({
     getUserTrainData(),
   ]);
 
-  const needsOnboarding =
-    (homeData.status === 200 && !homeData.data.activeWorkoutPlanId) ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  guardAppAccess(homeData, trainData);
 
   if (workoutDayData.status !== 200) redirect("/");
 
