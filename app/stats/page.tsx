@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { getServerSession } from "@/app/_lib/get-server-session";
 import { guardAppAccess } from "@/app/_lib/app-access";
 import { getStats, getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -17,11 +16,7 @@ function formatTotalTime(totalSeconds: number): string {
 }
 
 export default async function StatsPage() {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const session = await getServerSession();
 
   if (!session.data?.user) redirect("/auth");
 

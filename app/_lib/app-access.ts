@@ -8,15 +8,12 @@ import type {
 } from "@/app/_lib/api/fetch-generated";
 
 const hasCompletePhysicalData = (trainData: GetUserTrainData200): boolean => {
-  if (!trainData) {
-    return false;
-  }
+  if (!trainData) return false;
 
   return (
     trainData.weightInGrams > 0 &&
     trainData.heightInCentimeters > 0 &&
-    trainData.age > 0 &&
-    trainData.bodyFatPercentage >= 0
+    trainData.age > 0
   );
 };
 

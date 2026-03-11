@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button";
 
 export function SignInWithGoogle() {
   const handleGoogleLogin = async () => {
-    const callbackURL = new URL("/", window.location.origin).toString();
+    const callbackURL = new URL(
+      "/",
+      process.env.NEXT_PUBLIC_BASE_URL!
+    ).toString();
 
     const { error } = await authClient.signIn.social({
       provider: "google",

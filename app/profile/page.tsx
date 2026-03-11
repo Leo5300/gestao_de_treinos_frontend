@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { headers } from "next/headers";
-import { authClient } from "@/app/_lib/auth-client";
+import { getServerSession } from "@/app/_lib/get-server-session";
 import { guardAppAccess } from "@/app/_lib/app-access";
 import { getUserTrainData, getHomeData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -10,11 +9,7 @@ import { Weight, Ruler, BicepsFlexed, User } from "lucide-react";
 import { LogoutButton } from "./_components/logout-button";
 
 export default async function ProfilePage() {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const session = await getServerSession();
 
   if (!session.data?.user) redirect("/auth");
 
@@ -53,6 +48,7 @@ export default async function ProfilePage() {
                 {user.name?.charAt(0)?.toUpperCase()}
               </AvatarFallback>
             </Avatar>
+
             <div className="flex flex-col gap-1.5">
               <h1 className="font-heading text-lg font-semibold leading-[1.05] text-foreground">
                 {user.name}
@@ -69,10 +65,12 @@ export default async function ProfilePage() {
             <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
               <Weight className="size-4 text-primary" />
             </div>
+
             <div className="flex flex-col items-center gap-1.5">
               <span className="font-heading text-2xl font-semibold leading-[1.15] text-foreground">
                 {weightInKg ?? "-"}
               </span>
+
               <span className="font-heading text-xs uppercase leading-[1.4] text-muted-foreground">
                 Kg
               </span>
@@ -83,10 +81,12 @@ export default async function ProfilePage() {
             <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
               <Ruler className="size-4 text-primary" />
             </div>
+
             <div className="flex flex-col items-center gap-1.5">
               <span className="font-heading text-2xl font-semibold leading-[1.15] text-foreground">
                 {heightInCm ?? "-"}
               </span>
+
               <span className="font-heading text-xs uppercase leading-[1.4] text-muted-foreground">
                 Cm
               </span>
@@ -97,10 +97,12 @@ export default async function ProfilePage() {
             <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
               <BicepsFlexed className="size-4 text-primary" />
             </div>
+
             <div className="flex flex-col items-center gap-1.5">
               <span className="font-heading text-2xl font-semibold leading-[1.15] text-foreground">
                 {bodyFatPercentage != null ? `${bodyFatPercentage}%` : "-"}
               </span>
+
               <span className="font-heading text-xs uppercase leading-[1.4] text-muted-foreground">
                 Gc
               </span>
@@ -111,10 +113,12 @@ export default async function ProfilePage() {
             <div className="flex items-center rounded-full bg-primary/8 p-[9px]">
               <User className="size-4 text-primary" />
             </div>
+
             <div className="flex flex-col items-center gap-1.5">
               <span className="font-heading text-2xl font-semibold leading-[1.15] text-foreground">
                 {age ?? "-"}
               </span>
+
               <span className="font-heading text-xs uppercase leading-[1.4] text-muted-foreground">
                 Anos
               </span>

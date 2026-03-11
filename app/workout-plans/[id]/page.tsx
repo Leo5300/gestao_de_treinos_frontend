@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
-import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { getServerSession } from "@/app/_lib/get-server-session";
 import { guardAppAccess } from "@/app/_lib/app-access";
 import { getWorkoutPlan, getHomeData, getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import dayjs from "dayjs";
@@ -27,15 +26,12 @@ export default async function WorkoutPlanPage({
 }: {
   params: Promise<{ id: string }>;
 }) {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const session = await getServerSession();
 
   if (!session.data?.user) redirect("/auth");
 
   const { id } = await params;
+
   const [workoutPlanData, homeData, trainData] = await Promise.all([
     getWorkoutPlan(id),
     getHomeData(dayjs().format("YYYY-MM-DD")),
@@ -86,6 +82,7 @@ export default async function WorkoutPlanPage({
               <Goal className="size-4" />
               {name}
             </Badge>
+
             <h1 className="font-heading text-2xl font-semibold leading-[1.05] text-background">
               Plano de Treino
             </h1>

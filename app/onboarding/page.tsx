@@ -1,17 +1,12 @@
 import { Suspense } from "react";
-import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { Chat } from "@/app/_components/chat";
-import { authClient } from "@/app/_lib/auth-client";
+import { getServerSession } from "@/app/_lib/get-server-session";
 
 export const dynamic = "force-dynamic";
 
 export default async function OnboardingPage() {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const session = await getServerSession();
 
   if (!session.data?.user) {
     redirect("/auth");

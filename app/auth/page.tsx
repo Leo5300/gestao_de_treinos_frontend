@@ -1,15 +1,10 @@
 import Image from "next/image";
 import { redirect } from "next/navigation";
-import { authClient } from "@/app/_lib/auth-client";
-import { headers } from "next/headers";
+import { getServerSession } from "@/app/_lib/get-server-session";
 import { SignInWithGoogle } from "./_components/sign-in-with-google";
 
 export default async function AuthPage() {
-  const session = await authClient.getSession({
-    fetchOptions: {
-      headers: await headers(),
-    },
-  });
+  const session = await getServerSession();
 
   if (session.data?.user) redirect("/");
 
