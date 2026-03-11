@@ -20,6 +20,7 @@ export default async function Home() {
   if (!session.data?.user) redirect("/auth");
 
   const today = dayjs();
+
   const [homeData, trainData] = await Promise.all([
     getHomeData(today.format("YYYY-MM-DD")),
     getUserTrainData(),
@@ -29,12 +30,22 @@ export default async function Home() {
     throw new Error("Failed to fetch home data");
   }
 
-  const needsOnboarding =
-    !homeData.data.activeWorkoutPlanId ||
-    (trainData.status === 200 && !trainData.data);
-  if (needsOnboarding) redirect("/onboarding");
+  /**
+   * REGRAS
+   *
+   * Se não existir plano ativo → onboarding
+   * Se não existir treino do usuário → onboarding
+   */
+
+  const hasActivePlan = !!homeData.data.activeWorkoutPlanId;
+  const hasTrainData = trainData.status === 200 && !!trainData.data;
+
+  if (!hasActivePlan || !hasTrainData) {
+    redirect("/onboarding");
+  }
 
   const { todayWorkoutDay, workoutStreak, consistencyByDay } = homeData.data;
+
   const userName = session.data.user.name?.split(" ")[0] ?? "";
 
   return (
@@ -73,6 +84,7 @@ export default async function Home() {
               Bora treinar hoje?
             </p>
           </div>
+
           <div className="rounded-full bg-primary px-4 py-2">
             <span className="font-heading text-sm font-semibold text-primary-foreground">
               Bora!
@@ -86,6 +98,7 @@ export default async function Home() {
           <h2 className="font-heading text-lg font-semibold text-foreground">
             Consistência
           </h2>
+
           <button className="font-heading text-xs text-primary">
             Ver histórico
           </button>
@@ -98,6 +111,7 @@ export default async function Home() {
               today={today}
             />
           </div>
+
           <div className="flex items-center gap-2 self-stretch rounded-xl bg-streak px-5 py-2">
             <Flame className="size-5 text-streak-foreground" />
             <span className="font-heading text-base font-semibold text-foreground">
@@ -113,6 +127,7 @@ export default async function Home() {
             <h2 className="font-heading text-lg font-semibold text-foreground">
               Treino de Hoje
             </h2>
+
             <button className="font-heading text-xs text-primary">
               Ver treinos
             </button>
