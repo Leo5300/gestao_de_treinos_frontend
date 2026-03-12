@@ -1,9 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const host = request.headers.get("host");
 
-  // força todo acesso ao apex ir para www
   if (host === "leomarchi.com.br") {
     const url = request.nextUrl.clone();
 
