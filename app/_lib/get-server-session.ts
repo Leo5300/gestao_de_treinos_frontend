@@ -2,6 +2,7 @@ import { cookies } from "next/headers";
 import { authClient } from "@/app/_lib/auth-client";
 
 export async function getServerSession() {
+
   const cookieStore = await cookies();
 
   const cookieHeader = cookieStore
@@ -14,7 +15,9 @@ export async function getServerSession() {
       headers: {
         cookie: cookieHeader,
       },
+
       credentials: "include",
+
       cache: "no-store",
     },
   });
