@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { Chat } from "@/app/_components/chat";
+import { getUserTrainData } from "@/app/_lib/api/fetch-generated";
 import { getServerSession } from "@/app/_lib/get-server-session";
 
 export const dynamic = "force-dynamic";
@@ -9,6 +10,12 @@ export default async function OnboardingPage() {
   const session = await getServerSession();
 
   if (!session.data?.user) {
+    redirect("/auth");
+  }
+
+  const trainData = await getUserTrainData();
+
+  if (trainData.status === 401) {
     redirect("/auth");
   }
 
@@ -37,6 +44,7 @@ export default async function OnboardingPage() {
             <Chat
               embedded
               onboarding
+              initialTrainData={trainData.status === 200 ? trainData.data : null}
               initialMessage="Quero montar meu primeiro treino. Faca apenas as perguntas necessarias, salve meus dados fisicos e crie meu plano assim que tiver informacoes suficientes."
             />
           </div>
